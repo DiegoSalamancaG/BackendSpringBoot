@@ -3,10 +3,11 @@ package proyectoEcommerce.domain;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import proyectoEcommerce.utils.Auditable;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,7 +33,7 @@ public class User {
     @Column(unique = true)
     private String email;
 
-    @Column(columnDefinition = "BOOLEAN DEFAULT TRUE")
+    @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
     @NotNull(message = "El campo admin no puede estar vacío")
     private Boolean admin = false;
 
