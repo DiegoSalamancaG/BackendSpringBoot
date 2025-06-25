@@ -12,7 +12,10 @@ public interface UserMapper {
 
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
+    // Entidad a DTO de respuesta
     UserDTO userToUserDTO(User user);
+
+    // DTO de entrada a entidad (para métodos POST o PUT)
     User UserDTOToUser(UserDTO userDTO);
 
     List<UserDTO> userToUserDTOs(List<User> user);

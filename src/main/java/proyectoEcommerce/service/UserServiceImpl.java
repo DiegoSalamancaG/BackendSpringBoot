@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import proyectoEcommerce.domain.User;
 import proyectoEcommerce.dto.UserDTO;
 import proyectoEcommerce.dto.UserResponseDTO;
+import proyectoEcommerce.mapper.UserMapper;
 import proyectoEcommerce.repository.UserRepository;
 
 import java.util.List;
@@ -16,10 +17,14 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserMapper userMapper;
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository,
+                           PasswordEncoder passwordEncoder,
+                           UserMapper userMapper) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.userMapper = userMapper;
     }
 
     private User convertDTOToUSer(UserDTO dto){
