@@ -1,16 +1,10 @@
-package proyectoEcommerce.domain;
+package proyectoEcommerce.dto;
 
-import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import proyectoEcommerce.utils.Auditable;
 
-@Entity
-@Table(name = "categories")
-public class Category extends Auditable {
+public class CategoryDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank(message = "El nombre de la categoría es obligatorio")
@@ -20,16 +14,21 @@ public class Category extends Auditable {
     @Size(max = 255, message = "La descripción no debe superar los 255 caracteres")
     private String description;
 
-    public Category(){}
+    public CategoryDTO() {}
 
-    public Category(Long id, String description, String name) {
+    public CategoryDTO(Long id, String name, String description) {
         this.id = id;
-        this.description = description;
         this.name = name;
+        this.description = description;
     }
 
+    // Getters y setters
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

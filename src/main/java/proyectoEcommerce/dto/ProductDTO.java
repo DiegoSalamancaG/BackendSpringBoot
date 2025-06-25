@@ -1,9 +1,12 @@
 package proyectoEcommerce.dto;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.JoinColumn;
 import jakarta.validation.constraints.*;
 
 public class ProductDTO {
+
+    private Long id;
 
     @NotBlank(message = "El nombre es obligatorio")
     @Size(min = 3, max = 50, message = "El nombre debe tener entre 3 y 50 caracteres")
@@ -27,18 +30,27 @@ public class ProductDTO {
     @Column(columnDefinition = "BOOLEAN DEFAULT TRUE")
     private Boolean isActive = true;
 
+    //Category
+    @NotNull(message = "La categoría es obligatoria")
+    private Long categoryId;
+
     public ProductDTO(){}
 
-    public ProductDTO(String name, String description, String image, Integer stock, Double price, Boolean isActive) {
+    public ProductDTO(String name, String description, String image, Integer stock, Double price, Boolean isActive, Long categoryId) {
         this.name = name;
         this.description = description;
         this.image = image;
         this.stock = stock;
         this.price = price;
         this.isActive = isActive;
+        this.categoryId = categoryId;
     }
 
     //Getters
+    public Long getId() {
+        return id;
+    }
+
     public String getName() {
         return name;
     }
@@ -63,7 +75,15 @@ public class ProductDTO {
         return price;
     }
 
+    public Long getCategoryId() {
+        return categoryId;
+    }
+
     //Setters
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -86,5 +106,9 @@ public class ProductDTO {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
     }
 }

@@ -34,15 +34,21 @@ public class Product extends Auditable {
     @Column(columnDefinition = "BOOLEAN DEFAULT TRUE")
     private Boolean isActive = true;
 
+    //Category
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
+
     public Product() {}
 
-    public Product(Boolean isActive, String name, String description, String image, Integer stock, Double price) {
+    public Product(Boolean isActive, String name, String description, String image, Integer stock, Double price, Category category) {
         this.isActive = isActive;
         this.name = name;
         this.description = description;
         this.image = image;
         this.stock = stock;
         this.price = price;
+        this.category = category;
     }
 
     // Getters
@@ -74,6 +80,10 @@ public class Product extends Auditable {
         return isActive;
     }
 
+    public Category getCategory() {
+        return category;
+    }
+
     // Setters
     public void setName(String name) {
         this.name = name;
@@ -97,5 +107,9 @@ public class Product extends Auditable {
 
     public void setActive(Boolean active) {
         isActive = active;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }
