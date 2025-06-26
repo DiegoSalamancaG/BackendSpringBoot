@@ -3,18 +3,23 @@ package proyectoEcommerce.mapper;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 import proyectoEcommerce.domain.Category;
+import proyectoEcommerce.domain.Collection;
 import proyectoEcommerce.domain.Product;
 import proyectoEcommerce.dto.ProductDTO;
 import proyectoEcommerce.repository.CategoryRepository;
+import proyectoEcommerce.repository.CollectionRepository;
 
 @Component
 @Primary
 public class ProductMapperCustomImpl implements  ProductMapper{
 
     private final CategoryRepository categoryRepository;
+    private final CollectionRepository collectionRepository;
 
-    public ProductMapperCustomImpl(CategoryRepository categoryRepository) {
+    public ProductMapperCustomImpl(CategoryRepository categoryRepository,
+                                   CollectionRepository collectionRepository) {
         this.categoryRepository = categoryRepository;
+        this.collectionRepository = collectionRepository;
     }
 
     @Override
@@ -27,7 +32,14 @@ public class ProductMapperCustomImpl implements  ProductMapper{
         dto.setStock(product.getStock());
         dto.setPrice(product.getPrice());
         dto.setActive(product.getActive());
+
+        //Asignamos el nombre de la categoria
         dto.setCategoryId(product.getCategory().getId());
+        dto.setCategoryName(product.getCategory().getName());
+
+        //Asignamos el nombre de la colección
+        dto.setCollectionId(product.getCollection().getId());
+        dto.setCollectionName(product.getCollection().getName());
 
         return dto;
     }
@@ -44,9 +56,12 @@ public class ProductMapperCustomImpl implements  ProductMapper{
 
         //Category
         Category cat = categoryRepository.findById(dto.getCategoryId())
-                .orElseThrow(()->new RuntimeException("Categoria no encontrada"));
-
+                .orElseThrow(()->new RuntimeException("Categoría no encontrada con ID: " + dto.getCategoryId()));
         product.setCategory(cat);
+        //Collection
+        Collection col = collectionRepository.findById(dto.getCollectionId())
+                .orElseThrow(()->new RuntimeException("Colección no encontrada con ID: " + dto.getCollectionId()));
+        product.setCollection(col);
 
         return product;
     }

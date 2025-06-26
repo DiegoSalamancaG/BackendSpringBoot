@@ -44,13 +44,13 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public CategoryDTO updateCategory(Long id, CategoryDTO categoryDTO) {
-        Category existing = categoryRepository.findById(id)
+        Category existingCat = categoryRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Categoría no encontrada"));
 
-        existing.setName(categoryDTO.getName());
-        existing.setDescription(categoryDTO.getDescription());
+        existingCat.setName(categoryDTO.getName());
+        existingCat.setDescription(categoryDTO.getDescription());
 
-        return categoryMapper.toDto(categoryRepository.save(existing));
+        return categoryMapper.toDto(categoryRepository.save(existingCat));
     }
 
     @Override

@@ -39,9 +39,14 @@ public class Product extends Auditable {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
+    //Collection
+    @ManyToOne
+    @JoinColumn(name = "collection_id", nullable = false)
+    private Collection collection;
+
     public Product() {}
 
-    public Product(Boolean isActive, String name, String description, String image, Integer stock, Double price, Category category) {
+    public Product(Boolean isActive, String name, String description, String image, Integer stock, Double price, Category category, Collection collection) {
         this.isActive = isActive;
         this.name = name;
         this.description = description;
@@ -49,6 +54,7 @@ public class Product extends Auditable {
         this.stock = stock;
         this.price = price;
         this.category = category;
+        this.collection = collection;
     }
 
     // Getters
@@ -84,6 +90,10 @@ public class Product extends Auditable {
         return category;
     }
 
+    public Collection getCollection() {
+        return collection;
+    }
+
     // Setters
     public void setName(String name) {
         this.name = name;
@@ -111,5 +121,9 @@ public class Product extends Auditable {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public void setCollection(Collection collection) {
+        this.collection = collection;
     }
 }

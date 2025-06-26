@@ -34,9 +34,16 @@ public class ProductDTO {
     @NotNull(message = "La categoría es obligatoria")
     private Long categoryId;
 
+    //Collection
+    private Long collectionId;
+
+    //solo lectura
+    private String categoryName;
+    private String collectionName;
+
     public ProductDTO(){}
 
-    public ProductDTO(String name, String description, String image, Integer stock, Double price, Boolean isActive, Long categoryId) {
+    public ProductDTO(String name, String description, String image, Integer stock, Double price, Boolean isActive, Long categoryId, Long collectionId) {
         this.name = name;
         this.description = description;
         this.image = image;
@@ -44,6 +51,7 @@ public class ProductDTO {
         this.price = price;
         this.isActive = isActive;
         this.categoryId = categoryId;
+        this.collectionId = collectionId;
     }
 
     //Getters
@@ -79,6 +87,14 @@ public class ProductDTO {
         return categoryId;
     }
 
+    public String getCollectionName() {
+        return collectionName;
+    }
+
+    public Long getCollectionId() {
+        return collectionId;
+    }
+
     //Setters
     public void setId(Long id) {
         this.id = id;
@@ -110,5 +126,21 @@ public class ProductDTO {
 
     public void setCategoryId(Long categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public void setCollectionName(String collectionName) {
+        this.collectionName = collectionName;
+    }
+
+    public void setCollectionId(Long collectionId) {
+        this.collectionId = collectionId;
     }
 }
