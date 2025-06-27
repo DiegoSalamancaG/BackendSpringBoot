@@ -50,4 +50,12 @@ public class ProductController {
         productService.deleteProduct(id);
         return ResponseEntity.noContent().build();
     }
+
+    /*
+    @GetMapping
+    public ResponseEntity<List<ProductDTO>> getFilteredProducts(@RequestParam(required = false) Long categoryId,
+                                                                @RequestParam(required = false) Long collectionId){
+        List<ProductDTO> filteredProducts = productService.getFilteredProducts(categoryId,collectionId);
+        return ResponseEntity.ok(filteredProducts);
+    } */
 }

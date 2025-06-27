@@ -64,4 +64,23 @@ public class ProductServiceImpl implements ProductService {
         }
         productRepository.deleteById(id);
     }
+
+    /*
+    @Override
+    public List<ProductDTO> getFilteredProducts(Long categoryId, Long collectionId) {
+        List<Product> products;
+        if (categoryId != null && collectionId != null) {
+            new Product = productRepository.findByCategoryIdAndCollectionIdAndIsActiveTrue(categoryId, collectionId);
+        } else if (categoryId != null) {
+            products = productRepository.findByCategoryIdAndIsActiveTrue(categoryId);
+        } else if (collectionId != null) {
+            products = productRepository.findByCollectionIdAndIsActiveTrue(collectionId);
+        } else {
+            products = productRepository.findByIsActiveTrue(); // Todos activos
+        }
+
+        return products.stream()
+                .map(productMapper::toDto)
+                .toList();
+    } */
 }

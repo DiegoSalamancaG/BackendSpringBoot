@@ -67,7 +67,10 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // No se usa CSRF en APIs REST
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Sin sesiones
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/auth/**").permitAll() // Permitir acceso sin autenticación a rutas públicas
+                        .requestMatchers("/api/v1/auth/**").permitAll()// Permitir acceso sin autenticación a rutas públicas
+                        .requestMatchers("/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/swagger-ui.html").permitAll()
                         .requestMatchers(HttpMethod.GET,"/api/v1/products/**").permitAll()
                         .anyRequest().authenticated() // El resto requiere autenticación
                 )
