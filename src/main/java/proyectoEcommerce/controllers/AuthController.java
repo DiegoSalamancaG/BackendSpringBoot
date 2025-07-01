@@ -1,5 +1,12 @@
 package proyectoEcommerce.controllers;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,10 +19,7 @@ import proyectoEcommerce.domain.User;
 import proyectoEcommerce.dto.UserDTO;
 import proyectoEcommerce.repository.UserRepository;
 
-/**
- * Controlador REST responsable de manejar autenticación y registro de usuarios.
- * Expuesto en la ruta /api/v1/auth
- */
+@Tag(name = "Autenticación", description = "Endpoints para login y registro de usuarios")
 @RestController
 @RequestMapping("/api/v1/auth")
 public class AuthController {
@@ -26,9 +30,6 @@ public class AuthController {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    /**
-     * Constructor con inyección de dependencias necesarias para el proceso de autenticación.
-     */
     public AuthController(AuthenticationManager authenticationManager,
                           JwtUtil jwtUtil,
                           CustomUserDetailsService userDetailsService,
@@ -41,65 +42,70 @@ public class AuthController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    /**
-     * Endpoint para iniciar sesión.
-     * Verifica las credenciales del usuario, y si son válidas, genera un token JWT.
-     *
-     * @param req contiene username y password
-     * @return JWT en caso de éxito, o error 401 si las credenciales son inválidas
-     */
+    @Operation(
+            summary = "Iniciar sesión",
+            description = "Autentica al usuario y devuelve un token JWT en caso de éxito",
+            requestBody = @RequestBody(
+                    description = "Credenciales del usuario",
+                    required = true,
+                    content = @Content(schema = @Schema(implementation = AuthRequest.class))
+            ),
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Autenticación exitosa",
+                            content = @Content(schema = @Schema(implementation = AuthResponse.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "401",
+                            description = "Credenciales inválidas",
+                            content = @Content(schema = @Schema(example = "Credenciales inválidas"))
+                    )
+            }
+    )
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthRequest req) {
         try {
-            // Se intenta autenticar con las credenciales provistas
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(req.getUsername(), req.getPassword())
             );
         } catch (Exception e) {
-            // Si la autenticación falla, se retorna un error 401
             return ResponseEntity.status(401).body("Credenciales inválidas");
         }
 
-        // Si la autenticación fue exitosa, se genera el token JWT
         CustomUserDetail user = userDetailsService.loadUserByUsername(req.getUsername());
         String token = jwtUtil.generateToken(user.getUsername());
-
-        System.out.println("Token: " + token); // Solo para depuración (puedes eliminar esto en producción)
-
-        return ResponseEntity.ok(new AuthResponse(token)); // Se retorna el token al cliente
+        return ResponseEntity.ok(new AuthResponse(token));
     }
 
-    /**
-     * Endpoint para registrar un nuevo usuario.
-     * Valida que el username no esté en uso y guarda el nuevo usuario en la base de datos.
-     *
-     * @param req objeto DTO con los datos del nuevo usuario
-     * @return respuesta indicando éxito o error
-     */
+    @Operation(
+            summary = "Registro de nuevo usuario",
+            description = "Crea un nuevo usuario en la base de datos",
+            requestBody = @RequestBody(
+                    description = "Datos del usuario a registrar",
+                    required = true,
+                    content = @Content(schema = @Schema(implementation = UserDTO.class))
+            ),
+            responses = {
+                    @ApiResponse(responseCode = "201", description = "Usuario creado exitosamente"),
+                    @ApiResponse(responseCode = "400", description = "El usuario ya existe")
+            }
+    )
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody UserDTO req) {
-        // Validación: evitar usuarios duplicados por username
         if (userRepository.findByUsername(req.getUsername()).isPresent()) {
             return ResponseEntity.badRequest().body("Usuario ya existe!");
         }
 
-        // Se construye el nuevo usuario desde el DTO
         User newUser = new User();
         newUser.setName(req.getName());
         newUser.setUsername(req.getUsername());
         newUser.setEmail(req.getEmail());
-
-        // La contraseña se codifica para no guardarla en texto plano
         newUser.setPassword(passwordEncoder.encode(req.getPassword()));
-
-        // Se establecen los estados administrativos y de activación
         newUser.setAdmin(req.getAdmin());
         newUser.setActive(req.getActive());
 
-        // Persistencia del nuevo usuario
         userRepository.save(newUser);
-
         return ResponseEntity.status(201).body("Usuario creado exitosamente!");
     }
-
 }

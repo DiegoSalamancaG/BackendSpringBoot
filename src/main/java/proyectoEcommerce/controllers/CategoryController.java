@@ -1,5 +1,10 @@
 package proyectoEcommerce.controllers;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -8,6 +13,7 @@ import proyectoEcommerce.service.CategoryService;
 
 import java.util.List;
 
+@Tag(name = "Categorias",description = "Endpoints para el crear, buscar, eliminar y modificar Categorias")
 @RestController
 @RequestMapping("api/v1/categories")
 public class CategoryController {
@@ -18,6 +24,23 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
+    /*
+    @Operation(
+            summary = "Crear Categoria",
+            description = "Crea una Categoria y devuelve la Categoria creada",
+            requestBody = @RequestBody(
+                    description = "Categoria",
+                    required = true,
+                    content = @Content(schema = @Schema(implementation = CategoryDTO.class))
+            ),
+            responses = {
+                    @ApiResponse(
+                            responseCode = "201",
+                            description = "",
+                            content = @Content(schema = @Schema(implementation = CategoryDTO.class))
+                    )
+            }
+    )*/
     @PostMapping
     public ResponseEntity<CategoryDTO> postCategory(@Valid @RequestBody CategoryDTO categoryDTO){
         CategoryDTO c = categoryService.createCategory(categoryDTO);
