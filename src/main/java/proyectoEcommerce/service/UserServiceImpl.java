@@ -27,43 +27,18 @@ public class UserServiceImpl implements UserService {
         this.userMapper = userMapper;
     }
 
-    private User convertDTOToUSer(UserDTO dto){
-        User user =  new User();
-        user.setName(dto.getName());
-        user.setUsername(dto.getUsername());
-        user.setEmail(dto.getEmail());
-        user.setAdmin(dto.getAdmin() != null ? dto.getAdmin():false);
-        //si no es null añade el campo o true
-        user.setActive(dto.getActive() != null ? dto.getActive():true);
-
-        //no hasheamos contraseña aun
-        return user;
-    }
-
-    private UserResponseDTO convertUserToUserDTO(User user){
-        UserResponseDTO dto = new UserResponseDTO();
-        dto.setId(user.getId());
-        dto.setName(user.getName());
-        dto.setUsername(user.getUsername());
-        dto.setEmail(user.getEmail());
-        dto.setAdmin(user.getAdmin());
-        dto.setActive(user.getActive());
-
-        return dto;
-    }
-
     @Override
     public List<UserResponseDTO> getUsers() {
         return userRepository.findByActiveTrue()
                 .stream()
-                .map(this::convertUserToUserDTO)
+                .map(userMapper::toUserResponseDTO)
                 .collect(Collectors.toList());
     }
 
     @Override
     public Optional<UserResponseDTO> getUserById(Long id) {
         return userRepository.findById(id)
-                .map(this::convertUserToUserDTO);
+                .map(userMapper::toUserResponseDTO);
     }
 
     @Override
@@ -76,29 +51,24 @@ public class UserServiceImpl implements UserService {
         }
 
         //traemos los datos del usuarioDTO al nuevo usuario
-        User user = convertDTOToUSer(dto);
+        User user = userMapper.toEntity(dto);
 
         //ahora si hasheamos la contraseña
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
 
-        return Optional.of(convertUserToUserDTO(userRepository.save(user)));
+        return Optional.of(userMapper.toUserResponseDTO(userRepository.save(user)));
     }
 
     @Override
     public Optional<UserResponseDTO> updateUser(Long id, UserDTO dto) {
         return userRepository.findById(id).map(user -> {
-            user.setName(dto.getName());
-            user.setUsername(dto.getUsername());
-            user.setEmail(dto.getEmail());
-            user.setAdmin(dto.getAdmin());
-            user.setActive(dto.getActive());
-
+            userMapper.updatefromDto(dto,user);
             if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
                 user.setPassword(passwordEncoder.encode(dto.getPassword()));
             }
 
             User userUpdated = userRepository.save(user);
-            return convertUserToUserDTO(userUpdated);
+            return userMapper.toUserResponseDTO(userUpdated);
         });
     }
 

@@ -132,12 +132,12 @@ public class UserController {
             )
     })
     @PutMapping("/{id}")
-    public Optional<ResponseEntity<UserResponseDTO>> putUser(
+    public ResponseEntity<UserResponseDTO> putUser(
             @Parameter(description = "ID del usuario", example = "1")
             @PathVariable Long id, @Valid @RequestBody UserDTO userDto) {
         return userService.updateUser(id, userDto)
                 .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.<UserResponseDTO>notFound().build());
+                .orElse(ResponseEntity.notFound().build());
     }
 
     /**

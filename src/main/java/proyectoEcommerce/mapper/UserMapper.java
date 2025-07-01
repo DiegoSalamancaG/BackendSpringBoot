@@ -1,9 +1,12 @@
 package proyectoEcommerce.mapper;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 import proyectoEcommerce.domain.User;
 import proyectoEcommerce.dto.UserDTO;
+import proyectoEcommerce.dto.UserResponseDTO;
 
 import java.util.List;
 
@@ -12,13 +15,16 @@ public interface UserMapper {
 
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
-    // Entidad a DTO de respuesta
-    UserDTO userToUserDTO(User user);
+    // Convertir entidad a respuesta DTO (GET /usuarios)
+    UserResponseDTO toUserResponseDTO(User user);
 
     // DTO de entrada a entidad (para métodos POST o PUT)
-    User UserDTOToUser(UserDTO userDTO);
+    @Mapping(target = "id", ignore = true)
+    User toEntity(UserDTO dto);
 
-    List<UserDTO> userToUserDTOs(List<User> user);
-    List<User> userDTOToUsers(List<UserDTO> userDTO);
+    // Actualizar un usuario existente con datos del DTO (ej: PUT /usuarios/{id})
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "password", ignore = true) // evitar sobrescribir el password
+    void updatefromDto(UserDTO dto, @MappingTarget User user);
 
 }
