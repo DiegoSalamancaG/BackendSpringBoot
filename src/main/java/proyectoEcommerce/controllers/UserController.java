@@ -23,7 +23,7 @@ import java.util.Optional;
  * Controlador REST encargado de manejar operaciones CRUD para usuarios.
  * Todas las rutas requieren que el usuario tenga el rol ADMIN.
  */
-@Tag(name = "Usuarios", description = "Operaciones administrativas sobre los usuarios")
+@Tag(name = "Usuarios", description = "Endpoints para operaciones administrativas sobre los usuarios")
 @RestController
 @RequestMapping("/api/v1/users")
 @PreAuthorize("hasRole('ADMIN')") // Solo administradores pueden acceder a estos endpoints
@@ -108,7 +108,12 @@ public class UserController {
             )
     })
     @PostMapping
-    public ResponseEntity<Optional<UserResponseDTO>> postUser(@Valid @RequestBody UserDTO userDto) {
+    public ResponseEntity<Optional<UserResponseDTO>> postUser(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Datos del Usuario a crear",
+                    required = true,
+                    content = @Content(schema = @Schema(implementation = UserDTO.class))
+            ) @Valid @RequestBody UserDTO userDto) {
         return ResponseEntity.status(201).body(userService.postUser(userDto));
     }
 
@@ -125,7 +130,9 @@ public class UserController {
     )
     @ApiResponses({
             @ApiResponse(
-                    responseCode = "200",description = "Usuario modificado exitosamente"
+                    responseCode = "200",
+                    description = "Usuario modificado exitosamente",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDTO.class))
             ),
             @ApiResponse(
                     responseCode = "404", description = "Usuario no encontrado"
