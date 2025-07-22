@@ -2,7 +2,11 @@ package proyectoEcommerce.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Schema(description = "DTO para crear o actualizar productos en el sistema")
 public class ProductDTO {
 
@@ -49,7 +53,8 @@ public class ProductDTO {
     @Schema(description = "Nombre de la colección (solo lectura)", example = "Edición Clásica", accessMode = Schema.AccessMode.READ_ONLY)
     private String collectionName;
 
-    public ProductDTO() {}
+    public ProductDTO() {
+    }
 
     public ProductDTO(String name, String description, String image, Integer stock, Double price, Boolean isActive, Long categoryId, Long collectionId) {
         this.name = name;
@@ -59,96 +64,6 @@ public class ProductDTO {
         this.price = price;
         this.isActive = isActive;
         this.categoryId = categoryId;
-        this.collectionId = collectionId;
-    }
-
-    //Getters
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public Integer getStock() {
-        return stock;
-    }
-
-    public Boolean getActive() {
-        return isActive;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public Long getCategoryId() {
-        return categoryId;
-    }
-
-    public String getCollectionName() {
-        return collectionName;
-    }
-
-    public Long getCollectionId() {
-        return collectionId;
-    }
-
-    //Setters
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setStock(Integer stock) {
-        this.stock = stock;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public void setActive(Boolean active) {
-        isActive = active;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
-    }
-
-    public String getCategoryName() {
-        return categoryName;
-    }
-
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
-    }
-
-    public void setCollectionName(String collectionName) {
-        this.collectionName = collectionName;
-    }
-
-    public void setCollectionId(Long collectionId) {
         this.collectionId = collectionId;
     }
 }

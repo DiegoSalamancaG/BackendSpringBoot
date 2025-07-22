@@ -2,9 +2,13 @@ package proyectoEcommerce.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import lombok.Getter;
+import lombok.Setter;
 import proyectoEcommerce.utils.Auditable;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "products")
 public class Product extends Auditable {
 
@@ -54,76 +58,6 @@ public class Product extends Auditable {
         this.stock = stock;
         this.price = price;
         this.category = category;
-        this.collection = collection;
-    }
-
-    // Getters
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public Integer getStock() {
-        return stock;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public Boolean getActive() {
-        return isActive;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public Collection getCollection() {
-        return collection;
-    }
-
-    // Setters
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public void setStock(Integer stock) {
-        this.stock = stock;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public void setActive(Boolean active) {
-        isActive = active;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-    public void setCollection(Collection collection) {
         this.collection = collection;
     }
 }

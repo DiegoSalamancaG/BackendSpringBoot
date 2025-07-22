@@ -3,12 +3,18 @@ package proyectoEcommerce.domain;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 import proyectoEcommerce.utils.Auditable;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "collections")
 public class Collection extends Auditable {
 
+    //Setters
+    //Getters
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,29 +35,4 @@ public class Collection extends Auditable {
         this.description = description;
     }
 
-    //Getters
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    //Setters
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 }

@@ -1,32 +1,37 @@
 package proyectoEcommerce.utils;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
 /**
  * Clase base que agrega campos de auditoría a las entidades que la extiendan.
  */
+@Getter
+@Setter
 @MappedSuperclass
 public abstract class Auditable {
 
-    @CreationTimestamp
+    @CreatedDate
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
-    @UpdateTimestamp
+    @LastModifiedDate
     private LocalDateTime updatedAt;
 
-    // Getters
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
+    @CreatedBy
+    private String createdBy;
 
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
+    @LastModifiedBy
+    private String updatedBy;
 
 }
